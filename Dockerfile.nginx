@@ -1,0 +1,8 @@
+# 使用官方 Nginx 镜像
+FROM nginx:latest
+
+# 将 html 文件复制到 nginx 容器
+COPY html/ /usr/share/nginx/html
+
+# 暴露端口
+EXPOSE 80

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" value="111" v-model="searchCon.content" /> <input type="button" value="查询"
+            v-on:click="search" />
+        <table>
+            <tr>
+                <td>标题</td>
+                <td>内容</td>
+            </tr>
+
+            <tr v-for="(article,index) in articleList">
+                <td>{{article.title}}</td>
+                <td>{{article.content}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+<script type="module">
+    import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+    createApp({
+        data() {
+            return {
+                articleList: [],
+                searchCon: {
+                    content: "",
+                }
+            }
+        },
+        methods: {
+            // 搜索
+            search: function () {
+                axios.get("http://localhost:9090/list?content=" + this.searchCon.content).then(result => { console.log(result); this.articleList = result.data }).catch(err => { console.log(err) })
+            }
+        },
+        // 加载页面时
+        mounted: function () {
+            axios.get("http://localhost:9090/list").then(result => { console.log(result); this.articleList = result.data }).catch(err => { console.log(err) })
+            console.log("mounted")
+        },
+    }).mount('#app');
+</script>
+
+</html>
